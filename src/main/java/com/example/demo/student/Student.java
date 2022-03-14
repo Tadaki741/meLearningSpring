@@ -3,10 +3,12 @@ package com.example.demo.student;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.Period;
 
 /*
 @Entity is for Hibernate
 @Table is the use inside the database
+@Transient is for column that does not need to be displayed in the database, we want to hide it away
  */
 
 @Entity
@@ -25,16 +27,16 @@ public class Student {
     )
     private long id;
     private String name;
+    @Transient
     private Integer age;
     private LocalDate dob;
     private String email;
 
 
     //Constructor
-    public Student(long id, String name, String email, LocalDate dob, Integer age) {
+    public Student(long id, String name, String email, LocalDate dob) {
         this.id = id;
         this.name = name;
-        this.age = age;
         this.dob = dob;
         this.email = email;
     }
@@ -42,7 +44,7 @@ public class Student {
     public Student(){}
 
     //Use constructor without id as the database might generate id for us
-    public Student(String name, Integer age, LocalDate dob, String email) {
+    public Student(String name,String email,LocalDate dob) {
         this.name = name;
         this.age = age;
         this.dob = dob;
@@ -67,7 +69,7 @@ public class Student {
     }
 
     public Integer getAge() {
-        return age;
+        return Period.between(this.dob,LocalDate.now()).getYears();
     }
 
     public void setAge(Integer age) {
